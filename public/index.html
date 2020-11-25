@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>WebRTC Demo</title>
+</head>
+<body>
+    <h1>Naughty WebRTC <button type="button" id="pingRequest">ping</button></h1>
+
+    <div id="selectRoom">
+        <label>Provide a hot room number:</label>
+        <input id="roomNumber" type="text" />
+        <button id="goRoom">Go</button>
+    </div>
+
+    <div id="consultingRoom" style="display:none">
+        <video id="localVideo" autoplay></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
