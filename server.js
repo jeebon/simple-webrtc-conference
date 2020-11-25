@@ -4,14 +4,11 @@ const app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-
 // express routing
 app.use(express.static('public'));
 
-
 // signaling
-io.on('connection', function (socket) { // Socket is on fire in server
-  
+io.on('connection', function(socket) { // Socket is on fire in server
   console.log('A user connected.');
   console.log('');
   console.log('----Existing rooms:-----');
@@ -19,24 +16,18 @@ io.on('connection', function (socket) { // Socket is on fire in server
   console.log('-----------------------');
   console.log('');
 
-
-  socket.on('pingx', function (dt) {
+  socket.on('pingx', function(dt) {
     console.log("Request to ping broadcast.")
     socket.broadcast.emit('pingoutx', 'Test');
   });
 
 
-
-
-
-
-
-
-
-  socket.on('create or join', function (room) {  
+  socket.on('create or join', function(room) {
     console.log('create or join to room ', room);
 
-    var myRoom = io.sockets.adapter.rooms[room] || { length: 0 };
+    var myRoom = io.sockets.adapter.rooms[room] || {
+      length: 0
+    };
     var numClients = myRoom.length;
 
     console.log(room, ' has ', numClients, ' clients');
@@ -52,46 +43,24 @@ io.on('connection', function (socket) { // Socket is on fire in server
     }
   }); //Now webSocket After take decision just informing user created or joined in a room
 
-
-
-  
-  socket.on('ready', function (room) {
+  socket.on('ready', function(room) {
     socket.broadcast.to(room).emit('ready');
   });
 
-  socket.on('candidate', function (event) {
+  socket.on('candidate', function(event) {
     socket.broadcast.to(event.room).emit('candidate', event);
   });
 
-  socket.on('offer', function (event) {
+  socket.on('offer', function(event) {
     socket.broadcast.to(event.room).emit('offer', event.sdp);
   });
 
-  socket.on('answer', function (event) {
+  socket.on('answer', function(event) {
     socket.broadcast.to(event.room).emit('answer', event.sdp);
   });
-
-
-
-
-
-
-
-
-
-
 });
 
-
-
-
-
-
-
-
-
-
 // listener
-http.listen(3000, function () {
+http.listen(3000, function() {
   console.log('listening on *:3000');
 });
